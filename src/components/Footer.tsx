@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin } from "lucide-react";
+import logoAsset from "@/assets/accurate-value-logo.png.asset.json";
 
 export function Footer() {
   return (
@@ -7,7 +8,15 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12 md:px-6">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-lg font-bold">
+            <img
+              src={logoAsset.url}
+              alt="ACCURATE VALUE MCHJ logo"
+              className="h-10 w-auto rounded-md bg-white p-1.5"
+              width={80}
+              height={40}
+              loading="lazy"
+            />
+            <h3 className="mt-3 text-lg font-bold">
               ACCURATE <span className="text-primary">VALUE</span>
             </h3>
             <p className="mt-3 text-sm text-white/70">

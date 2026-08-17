@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/accurate-value-logo.png.asset.json";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -16,7 +17,14 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={logoAsset.url}
+            alt="ACCURATE VALUE MCHJ logo"
+            className="h-8 w-auto"
+            width={64}
+            height={32}
+          />
           <span className="text-lg font-bold tracking-tight text-foreground">
             ACCURATE <span className="text-primary">VALUE</span>
           </span>
