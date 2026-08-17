@@ -1,10 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { Phone, Mail, MapPin, Clock, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { contactSchema, submitContactInquiry } from "@/lib/contact.functions";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -30,7 +35,7 @@ const contactDetails = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@accuratevalue.uz",
+    value: "accuratevalue01@gmail.com",
   },
   {
     icon: MapPin,
@@ -44,7 +49,41 @@ const contactDetails = [
   },
 ];
 
+const emptyForm = { name: "", phone: "", email: "", service: "", message: "" };
+
 function ContactPage() {
+  const [form, setForm] = useState(emptyForm);
+  const submit = useServerFn(submitContactInquiry);
+
+  const mutation = useMutation({
+    mutationFn: (values: typeof emptyForm) => submit({ data: values }),
+    onSuccess: () => {
+      toast.success("Thank you! Your inquiry has been received.", {
+        description: "Our team will get back to you within one business day.",
+      });
+      setForm(emptyForm);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Something went wrong. Please try again.");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = contactSchema.safeParse(form);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Please check the form.");
+      return;
+    }
+    mutation.mutate(form);
+  };
+
+  const field = (key: keyof typeof emptyForm) => ({
+    value: form[key],
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((prev) => ({ ...prev, [key]: e.target.value })),
+  });
+
   return (
     <div className="flex flex-col">
       <section className="bg-navy py-16 md:py-24">
@@ -66,31 +105,37 @@ function ContactPage() {
                 Fill out the form below and we'll get back to you within one business day.
               </p>
 
-              <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" placeholder="Your name" />
+                    <Input id="name" placeholder="Your name" maxLength={100} required {...field("name")} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" placeholder="+998 90 123 45 67" />
+                    <Input id="phone" placeholder="+998 90 123 45 67" maxLength={50} {...field("phone")} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="you@example.com" />
+                  <Input id="email" type="email" placeholder="you@example.com" maxLength={255} required {...field("email")} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="service">Service Needed</Label>
-                  <Input id="service" placeholder="Vehicle / Real Estate / Business valuation" />
+                  <Input id="service" placeholder="Vehicle / Real Estate / Business valuation" maxLength={150} {...field("service")} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={5} placeholder="Tell us about your valuation needs" />
+                  <Textarea id="message" rows={5} maxLength={2000} required placeholder="Tell us about your valuation needs" {...field("message")} />
                 </div>
-                <Button type="submit" size="lg" className="w-full font-semibold sm:w-auto">
-                  Send Message
+                <Button type="submit" size="lg" disabled={mutation.isPending} className="w-full font-semibold sm:w-auto">
+                  {mutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
                 </Button>
               </form>
             </div>
