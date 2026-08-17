@@ -35,7 +35,7 @@ const contactDetails = [
   {
     icon: Mail,
     label: "Email",
-    value: "accuratevalue01@gmail.com",
+    value: "info@accurate-value.uz",
   },
   {
     icon: MapPin,
