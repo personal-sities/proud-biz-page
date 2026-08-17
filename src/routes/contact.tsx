@@ -105,31 +105,37 @@ function ContactPage() {
                 Fill out the form below and we'll get back to you within one business day.
               </p>
 
-              <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
+              <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" placeholder="Your name" />
+                    <Input id="name" placeholder="Your name" maxLength={100} required {...field("name")} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone</Label>
-                    <Input id="phone" placeholder="+998 90 123 45 67" />
+                    <Input id="phone" placeholder="+998 90 123 45 67" maxLength={50} {...field("phone")} />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="you@example.com" />
+                  <Input id="email" type="email" placeholder="you@example.com" maxLength={255} required {...field("email")} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="service">Service Needed</Label>
-                  <Input id="service" placeholder="Vehicle / Real Estate / Business valuation" />
+                  <Input id="service" placeholder="Vehicle / Real Estate / Business valuation" maxLength={150} {...field("service")} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={5} placeholder="Tell us about your valuation needs" />
+                  <Textarea id="message" rows={5} maxLength={2000} required placeholder="Tell us about your valuation needs" {...field("message")} />
                 </div>
-                <Button type="submit" size="lg" className="w-full font-semibold sm:w-auto">
-                  Send Message
+                <Button type="submit" size="lg" disabled={mutation.isPending} className="w-full font-semibold sm:w-auto">
+                  {mutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
                 </Button>
               </form>
             </div>
