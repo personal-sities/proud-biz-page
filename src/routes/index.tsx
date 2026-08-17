@@ -97,7 +97,7 @@ function HomePage() {
               <Button asChild size="lg" className="font-semibold">
                 <Link to="/contact">Request a Valuation</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 hover:text-white font-semibold">
+              <Button asChild variant="outline" size="lg" className="border-white/40 bg-white/5 text-white hover:bg-white/15 hover:text-white font-semibold backdrop-blur-sm">
                 <Link to="/services">Explore Services</Link>
               </Button>
             </div>
