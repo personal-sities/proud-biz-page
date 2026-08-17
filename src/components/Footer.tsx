@@ -51,7 +51,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2 text-white/70">
                 <Mail className="size-4 text-primary" />
-                <span>accuratevalue01@gmail.com</span>
+                <span>info@accurate-value.uz</span>
               </li>
               <li className="flex items-start gap-2 text-white/70">
                 <MapPin className="size-4 text-primary shrink-0" />
