@@ -49,7 +49,41 @@ const contactDetails = [
   },
 ];
 
+const emptyForm = { name: "", phone: "", email: "", service: "", message: "" };
+
 function ContactPage() {
+  const [form, setForm] = useState(emptyForm);
+  const submit = useServerFn(submitContactInquiry);
+
+  const mutation = useMutation({
+    mutationFn: (values: typeof emptyForm) => submit({ data: values }),
+    onSuccess: () => {
+      toast.success("Thank you! Your inquiry has been received.", {
+        description: "Our team will get back to you within one business day.",
+      });
+      setForm(emptyForm);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || "Something went wrong. Please try again.");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = contactSchema.safeParse(form);
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0]?.message ?? "Please check the form.");
+      return;
+    }
+    mutation.mutate(form);
+  };
+
+  const field = (key: keyof typeof emptyForm) => ({
+    value: form[key],
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((prev) => ({ ...prev, [key]: e.target.value })),
+  });
+
   return (
     <div className="flex flex-col">
       <section className="bg-navy py-16 md:py-24">
