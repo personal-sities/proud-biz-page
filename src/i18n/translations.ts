@@ -10,7 +10,7 @@ export const defaultLanguage: Language = "uz";
 
 type Dict = Record<string, string | string[]>;
 
-const uz: Dict = {
+const uz = {
   "nav.home": "Bosh sahifa",
   "nav.services": "Xizmatlar",
   "nav.about": "Biz haqimizda",
@@ -150,12 +150,20 @@ const uz: Dict = {
   "contact.info.phone": "Telefon",
   "contact.info.email": "Email",
   "contact.info.address": "Manzil",
-  "contact.info.addressValue": "Toshkent, O'zbekiston",
+  "contact.info.addressValue":
+    "Toshkent shahri, Shayxontohur tumani, Zarqaynar ko'chasi, 39-uy",
   "contact.info.hours": "Ish vaqti",
   "contact.info.hoursValue": "Dush–Shan: 09:00 – 18:00",
+  "contact.map.aria": "ACCURATE VALUE ofisi joylashgan interaktiv xarita",
+  "contact.map.open": "Google Maps'da ochish",
+  "contact.form.nameRequired": "Ism kiritilishi shart",
+  "contact.form.emailInvalid": "Email manzil noto'g'ri",
+  "contact.form.messageRequired": "Xabar kiritilishi shart",
 };
 
-const ru: Dict = {
+export type TranslationKey = keyof typeof uz;
+
+const ru: Record<TranslationKey, string | string[]> = {
   "nav.home": "Главная",
   "nav.services": "Услуги",
   "nav.about": "О нас",
@@ -295,12 +303,18 @@ const ru: Dict = {
   "contact.info.phone": "Телефон",
   "contact.info.email": "Email",
   "contact.info.address": "Адрес",
-  "contact.info.addressValue": "Ташкент, Узбекистан",
+  "contact.info.addressValue":
+    "г. Ташкент, Шайхантахурский район, улица Заркайнар, дом 39",
   "contact.info.hours": "Часы работы",
   "contact.info.hoursValue": "Пн–Сб: 09:00 – 18:00",
+  "contact.map.aria": "Интерактивная карта с офисом ACCURATE VALUE",
+  "contact.map.open": "Открыть в Google Maps",
+  "contact.form.nameRequired": "Укажите имя",
+  "contact.form.emailInvalid": "Неверный адрес email",
+  "contact.form.messageRequired": "Введите сообщение",
 };
 
-const en: Dict = {
+const en: Record<TranslationKey, string | string[]> = {
   "nav.home": "Home",
   "nav.services": "Services",
   "nav.about": "About",
@@ -440,9 +454,15 @@ const en: Dict = {
   "contact.info.phone": "Phone",
   "contact.info.email": "Email",
   "contact.info.address": "Address",
-  "contact.info.addressValue": "Tashkent, Uzbekistan",
+  "contact.info.addressValue":
+    "39 Zarqaynar Street, Shaykhantakhur District, Tashkent, Uzbekistan",
   "contact.info.hours": "Working Hours",
   "contact.info.hoursValue": "Mon–Sat: 09:00 – 18:00",
+  "contact.map.aria": "Interactive map showing the ACCURATE VALUE office",
+  "contact.map.open": "Open in Google Maps",
+  "contact.form.nameRequired": "Name is required",
+  "contact.form.emailInvalid": "Invalid email address",
+  "contact.form.messageRequired": "Message is required",
 };
 
 export const dictionaries: Record<Language, Dict> = { uz, ru, en };
