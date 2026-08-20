@@ -13,6 +13,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { LanguageProvider } from "../i18n/LanguageContext";
 
 function NotFoundComponent() {
   return (
@@ -106,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="uz">
       <head>
         <HeadContent />
       </head>
@@ -123,14 +124,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <Footer />
-        <Toaster />
-      </div>
+      <LanguageProvider>
+        <div className="flex min-h-screen flex-col">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+          <Toaster />
+        </div>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }

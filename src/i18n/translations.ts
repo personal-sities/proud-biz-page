@@ -32,6 +32,7 @@ const uz = {
     "ACCURATE VALUE MCHJ O'zbekiston bo'ylab transport vositalari, ko'chmas mulk va bizneslarni sertifikatlangan, mustaqil baholashni amalga oshiradi.",
   "home.hero.cta1": "Baholashga buyurtma",
   "home.hero.cta2": "Xizmatlarni ko'rish",
+  "home.hero.imgAlt": "Baholash hujjatlarini ko'rib chiquvchi professional baholovchi",
 
   "home.services.eyebrow": "Biz nima qilamiz",
   "home.services.title": "Baholash xizmatlari",
@@ -185,6 +186,7 @@ const ru: Record<TranslationKey, string | string[]> = {
     "ACCURATE VALUE MCHJ проводит сертифицированную независимую оценку транспортных средств, недвижимости и бизнеса по всему Узбекистану.",
   "home.hero.cta1": "Заказать оценку",
   "home.hero.cta2": "Наши услуги",
+  "home.hero.imgAlt": "Профессиональный оценщик изучает документы для оценки",
 
   "home.services.eyebrow": "Чем мы занимаемся",
   "home.services.title": "Услуги оценки",
@@ -336,6 +338,7 @@ const en: Record<TranslationKey, string | string[]> = {
     "ACCURATE VALUE MCHJ delivers certified, independent valuation of motor vehicles, real estate, and businesses across Uzbekistan.",
   "home.hero.cta1": "Request a Valuation",
   "home.hero.cta2": "Explore Services",
+  "home.hero.imgAlt": "Professional appraiser reviewing valuation documents",
 
   "home.services.eyebrow": "What We Do",
   "home.services.title": "Valuation Services",
