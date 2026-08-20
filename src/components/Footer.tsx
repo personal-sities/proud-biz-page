@@ -1,8 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { Phone, Mail, MapPin } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 import logoAsset from "@/assets/accurate-value-logo.png.asset.json";
 
+const quickLinks = [
+  { to: "/", key: "nav.home" },
+  { to: "/services", key: "nav.services" },
+  { to: "/about", key: "nav.about" },
+  { to: "/contact", key: "nav.contact" },
+] as const;
+
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer className="border-t border-border bg-navy text-white">
       <div className="container mx-auto px-4 py-12 md:px-6">
@@ -19,31 +29,28 @@ export function Footer() {
             <h3 className="mt-3 text-lg font-bold">
               ACCURATE <span className="text-primary">VALUE</span>
             </h3>
-            <p className="mt-3 text-sm text-white/70">
-              Professional valuation services for vehicles, real estate, and businesses across Uzbekistan.
-            </p>
+            <p className="mt-3 text-sm text-white/70">{t("footer.tagline")}</p>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80">Quick Links</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80">
+              {t("footer.quickLinks")}
+            </h4>
             <ul className="mt-4 space-y-2 text-sm">
-              <li>
-                <Link to="/" className="text-white/70 hover:text-primary transition-colors">Home</Link>
-              </li>
-              <li>
-                <Link to="/services" className="text-white/70 hover:text-primary transition-colors">Services</Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-white/70 hover:text-primary transition-colors">About</Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-white/70 hover:text-primary transition-colors">Contact</Link>
-              </li>
+              {quickLinks.map((item) => (
+                <li key={item.to}>
+                  <Link to={item.to} className="text-white/70 hover:text-primary transition-colors">
+                    {t(item.key)}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80">Contact</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-wider text-white/80">
+              {t("footer.contact")}
+            </h4>
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-center gap-2 text-white/70">
                 <Phone className="size-4 text-primary" />
@@ -55,14 +62,14 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2 text-white/70">
                 <MapPin className="size-4 text-primary shrink-0" />
-                <span>Tashkent, Uzbekistan</span>
+                <span>{t("contact.info.addressValue")}</span>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} ACCURATE VALUE MCHJ. All rights reserved.
+          © {new Date().getFullYear()} ACCURATE VALUE MCHJ. {t("footer.rights")}
         </div>
       </div>
     </footer>
