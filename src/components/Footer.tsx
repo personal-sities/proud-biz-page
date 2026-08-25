@@ -54,11 +54,11 @@ export function Footer() {
             <ul className="mt-4 space-y-3 text-sm">
               <li className="flex items-center gap-2 text-white/70">
                 <Phone className="size-4 text-primary" />
-                <span>+998 90 123 45 67</span>
+                <span>+998 91 598 82 42</span>
               </li>
               <li className="flex items-center gap-2 text-white/70">
                 <Mail className="size-4 text-primary" />
-                <span>info@accurate-value.uz</span>
+                <span>accuratevalue01@gmail.com</span>
               </li>
               <li className="flex items-start gap-2 text-white/70">
                 <MapPin className="size-4 text-primary shrink-0" />
