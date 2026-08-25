@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { contactSchema, submitContactInquiry } from "@/lib/contact.functions";
+import { useLanguage } from "@/i18n/LanguageContext";
+import type { TranslationKey } from "@/i18n/translations";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -26,53 +28,50 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const contactDetails = [
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+998 90 123 45 67",
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    value: "info@accurate-value.uz",
-  },
-  {
-    icon: MapPin,
-    label: "Address",
-    value: "Tashkent, Uzbekistan",
-  },
-  {
-    icon: Clock,
-    label: "Working Hours",
-    value: "Mon–Sat: 09:00 – 18:00",
-  },
+const contactDetails: Array<{
+  icon: typeof Phone;
+  labelKey: TranslationKey;
+  valueKey?: TranslationKey;
+  value?: string;
+}> = [
+  { icon: Phone, labelKey: "contact.info.phone", value: "+998 90 123 45 67" },
+  { icon: Mail, labelKey: "contact.info.email", value: "info@accurate-value.uz" },
+  { icon: MapPin, labelKey: "contact.info.address", valueKey: "contact.info.addressValue" },
+  { icon: Clock, labelKey: "contact.info.hours", valueKey: "contact.info.hoursValue" },
 ];
 
 const emptyForm = { name: "", phone: "", email: "", service: "", message: "" };
 
 function ContactPage() {
+  const { t } = useLanguage();
   const [form, setForm] = useState(emptyForm);
   const submit = useServerFn(submitContactInquiry);
 
   const mutation = useMutation({
     mutationFn: (values: typeof emptyForm) => submit({ data: values }),
     onSuccess: () => {
-      toast.success("Thank you! Your inquiry has been received.", {
-        description: "Our team will get back to you within one business day.",
+      toast.success(t("contact.toast.success"), {
+        description: t("contact.toast.successDesc"),
       });
       setForm(emptyForm);
     },
-    onError: (error: Error) => {
-      toast.error(error.message || "Something went wrong. Please try again.");
+    onError: () => {
+      toast.error(t("contact.form.errorGeneric"));
     },
   });
+
+  const translateIssue = (message: string | undefined): string => {
+    if (message === "Name is required") return t("contact.form.nameRequired");
+    if (message === "Invalid email address") return t("contact.form.emailInvalid");
+    if (message === "Message is required") return t("contact.form.messageRequired");
+    return message ?? t("contact.form.checkForm");
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = contactSchema.safeParse(form);
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "Please check the form.");
+      toast.error(translateIssue(parsed.error.issues[0]?.message));
       return;
     }
     mutation.mutate(form);
@@ -88,10 +87,10 @@ function ContactPage() {
     <div className="flex flex-col">
       <section className="bg-navy py-16 md:py-24">
         <div className="container mx-auto px-4 text-center md:px-6">
-          <p className="text-sm font-semibold uppercase tracking-wider text-primary">Get in Touch</p>
-          <h1 className="mt-4 text-4xl font-bold text-white md:text-5xl">Contact Us</h1>
+          <p className="text-sm font-semibold uppercase tracking-wider text-primary">{t("contact.hero.eyebrow")}</p>
+          <h1 className="mt-4 text-4xl font-bold text-white md:text-5xl">{t("contact.hero.title")}</h1>
           <p className="mx-auto mt-6 max-w-2xl text-white/80">
-            Have a question or need a quote? Reach out and our team will respond promptly.
+            {t("contact.hero.subtitle")}
           </p>
         </div>
       </section>
@@ -100,64 +99,66 @@ function ContactPage() {
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Send Us a Message</h2>
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t("contact.form.title")}</h2>
               <p className="mt-4 text-muted-foreground">
-                Fill out the form below and we'll get back to you within one business day.
+                {t("contact.form.subtitle")}
               </p>
 
               <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" placeholder="Your name" maxLength={100} required {...field("name")} />
+                    <Label htmlFor="name">{t("contact.form.name")}</Label>
+                    <Input id="name" placeholder={t("contact.form.namePlaceholder")} maxLength={100} required {...field("name")} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">{t("contact.form.phone")}</Label>
                     <Input id="phone" placeholder="+998 90 123 45 67" maxLength={50} {...field("phone")} />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">{t("contact.form.email")}</Label>
                   <Input id="email" type="email" placeholder="you@example.com" maxLength={255} required {...field("email")} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="service">Service Needed</Label>
-                  <Input id="service" placeholder="Vehicle / Real Estate / Business valuation" maxLength={150} {...field("service")} />
+                  <Label htmlFor="service">{t("contact.form.service")}</Label>
+                  <Input id="service" placeholder={t("contact.form.servicePlaceholder")} maxLength={150} {...field("service")} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" rows={5} maxLength={2000} required placeholder="Tell us about your valuation needs" {...field("message")} />
+                  <Label htmlFor="message">{t("contact.form.message")}</Label>
+                  <Textarea id="message" rows={5} maxLength={2000} required placeholder={t("contact.form.messagePlaceholder")} {...field("message")} />
                 </div>
                 <Button type="submit" size="lg" disabled={mutation.isPending} className="w-full font-semibold sm:w-auto">
                   {mutation.isPending ? (
                     <>
-                      <Loader2 className="mr-2 size-4 animate-spin" /> Sending…
+                      <Loader2 className="mr-2 size-4 animate-spin" /> {t("contact.form.sending")}
                     </>
                   ) : (
-                    "Send Message"
+                    t("contact.form.submit")
                   )}
                 </Button>
               </form>
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-foreground md:text-4xl">Contact Information</h2>
+              <h2 className="text-3xl font-bold text-foreground md:text-4xl">{t("contact.info.title")}</h2>
               <p className="mt-4 text-muted-foreground">
-                You can also reach us directly using the details below.
+                {t("contact.info.subtitle")}
               </p>
 
               <div className="mt-8 grid gap-4">
                 {contactDetails.map((item) => (
-                  <Card key={item.label} className="border-border bg-card">
+                  <Card key={item.labelKey} className="border-border bg-card">
                     <CardContent className="flex items-center gap-4 p-4">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                         <item.icon className="size-5 text-primary" />
                       </div>
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          {item.label}
+                          {t(item.labelKey)}
                         </p>
-                        <p className="font-medium text-card-foreground">{item.value}</p>
+                        <p className="font-medium text-card-foreground">
+                          {item.valueKey ? t(item.valueKey) : item.value}
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
